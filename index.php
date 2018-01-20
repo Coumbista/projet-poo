@@ -1,20 +1,145 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <title>Title</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<?php
+// Déclaration du namespace.
+   namespace location\dao;
+   use \PDO;
+     
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-  </head>
-  <body>
-      
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-  </body>
-</html>
+           // ****************debut class bien*******************
+
+   class Bien{
+       var $idbien;
+       var $nombien;
+       var $adressbien;
+       var $montanloc;
+       var $commission;
+       private $bdd;
+       
+
+private function getConnexion(){
+try{
+ if($this->bdd == null){
+     $this->bdd = new PDO('mysql:host=;dbname=bdlocation;charset=utf8', 'root', 'partie',
+     array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); 
+ }       
+}
+catch(Exception $e){
+ die('Erreur : ' . $e->getMessage());
+}
+}  
+//debut fonction add
+function addBien(){
+
+$this->getConnexion();  
+
+$coumba="insert into bien (idbien,nombien,adressbien,montanloc,commission,idpro,idtype,etatbien )values(null,?,?,?,?,?,?,?)";
+$mbow = $this->bdd->prepare($coumba);
+$waly = $mbow->execute(
+ array($this->nombien   ,
+       $this->adressbien,
+      $this->montanloc,
+       $this->commission,
+       $this->nompro,
+       $this->nomBien,      
+                     
+     ));
+     return $waly;
+
+    
+//fin fonction
+
+//debut fonction find
+}
+function addpro(){
+
+     $this->getConnexion();  
+       
+     $coumba="insert into proprietaire (idpro,nompro,numpiece,tel )values(null,?,?,?)";     
+     $var = $this->bdd->prepare($coumba);
+     $n = $var->execute(
+         array($this->nompro,
+                $this->numpiece,
+                $this->tel
+             )); 
+             return $n;
+     }
+     function addtype(){
+         $this->getConnexion();  
+         $coumba="insert into typebien (idtype,nomBien )values(null,?)";
+                
+                 $nd= $this->bdd->prepare($coumba);
+                 $mama = $nd->execute(array($this->nomBien));   
+                   return $mama;  
+                
+                 }
+                 function addcontrat(){
+                   $this->getConnexion();  
+                   $coumba="insert into contrat (idcontra,datedeb,datefin,montantloc ,montantpro)values(null,?,?,?,?)";
+                          
+                           $nd= $this->bdd->prepare($coumba);
+                           $mama = $nd->execute(array(
+                             $this->datedeb,
+                             $this->datefin,                            
+                             $this->montantpro,
+                             20000
+                                   ));   
+                             return $mama;  
+                                 }
+
+function findbien(){
+
+// preparation de la requete
+$donnees = $this->bdd->query('select * from bien');
+$donnees=$reponse->fetch();
+return $donnees;
+}
+
+
+//debut fonction modifier
+
+function updatebien(){
+$this->getConnexion();
+$sql=$this->bdd->prepare( 'update bien set nombien=:nombien,adressbien=:adressbien,montanbien=:montantbien,commission=:commission,idtype=:typebien');
+$sql->execute( array(
+ 'nombien'=>$this->nombien   ,
+ 'adressbien'=>$this->adressbien,
+ 'montantbien'=>$this->montanloc,
+ 'commission'=>$this->commission,           
+ 'typebien'=>$this->idtype
+
+));
+
+}
+                 
+//fin fonction
+function listerbien(){
+ 
+      $this->getConnexion();
+     // requete a executer
+    $sql = ("select * from bien");
+     // preparation de la requete
+     $donnees = $this->bdd->query($sql);
+     return $donnees;
+ }
+
+function listerbytypeb(){
+ 
+      $this->getConnexion();
+   // preparation de la requete
+     $donnees = $this->bdd->query("select nombien,adress,montantloc,commission,idpro where  from bien as b, typebien as t where t.idtypebien = '.$typebien.' and b.idtypebien = '.$typebien") or die(print_r($bdd->errorinfo()));
+     return $donnees;
+ }
+
+function listerbyetatb(){
+ 
+      $this->getConnexion();
+     //  if($donnees['etatbien']==0 || $donnees['etatbien']==1){
+   // preparation de la requete
+     $donnees = $this->bdd->query("select * from nombien,adressbien,montanbien,commission,idpro,idtype where etatbien==0 or etatbien==1") 
+     or die(print_r($this->bdd->errorinfo()));
+     return $donnees;
+      }
+     }
+     
+// **********************fin class bien*********************
+
+?
