@@ -61,13 +61,13 @@ body{
 
 				<div class="wrap-input100 validate-input" data-validate = "Valid date ">
 					<span class="label-input100">date debut signature:</span>
-					<input class="input100" type="text" id="coumba" name="datedebut" placeholder="Entrez la date">
+					<input class="input100" type="text" id="date1" name="datedebut" placeholder="Entrez la date">
 					<span class="focus-input100"></span>
 				</div>
 
 				<div class="wrap-input100 validate-input" data-validate="required">
 					<span class="label-input100">date fin signature:</span>
-					<input class="input100" type="text" id="niass" name="date" placeholder="choisir la date">
+					<input class="input100" type="text" id="date" name="phone" placeholder="choisir la date">
 					<span class="focus-input100"></span>
 				</div>
 				<div class="wrap-input100 validate-input" data-validate="montant required">
